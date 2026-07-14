@@ -16,7 +16,7 @@ Now: the symlinks point here, and our overrides are committed on the `motion` br
 ## Remotes
 
 - **`upstream`** → `garrytan/gstack` (read-only reference — never push)
-- `origin` → *(not set yet — a repo we own)*
+- `origin` → `tolowa-studio/motion-gstack` (private, **default branch: `motion`**)
 
 ## Our overrides (9 skills, diverged from upstream)
 
