@@ -24,6 +24,20 @@ Now: the symlinks point here, and our overrides are committed on the `motion` br
 
 These were MOTION-ified in place (upstream ~1,700 lines → our ~100). Note that MOTION now serves its **own** versions of most of these from `motion-skills`, so several of these gstack copies are no longer wired into `~/.claude` — see the skill audit.
 
+## ⚠️ Upstream drift (as of 2026-07-14)
+
+We are pinned at **v1.5.2.0** (`656df0e`, 2026-04-22). Upstream is at **v1.60.1.0** (`7c9df1c`, 2026-07-09) — **94 commits ahead**.
+
+**13 skills exist upstream that we do not have at all:**
+`diagram` · `document-generate` · `landing-report` · `scrape` · `skillify` · `spec` · `setup-gbrain` · `sync-gbrain` · `ios-clean` · `ios-design-review` · `ios-fix` · `ios-qa` · `ios-sync`
+
+(The 5 `ios-*` ones are almost certainly irrelevant to a web/GTM studio. The rest are worth evaluating.)
+
+**All 9 skills we override have ALSO changed upstream** — so any merge will conflict on exactly the files we care about:
+`canary` · `design-consultation` · `design-review` · `document-release` · `office-hours` · `plan-eng-review` · `qa` · `retro` · `ship`
+
+Merge **selectively, skill by skill**. A blanket merge buries the MOTION overrides.
+
 ## Regular upstream check
 
 ```bash
