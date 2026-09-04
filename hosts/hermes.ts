@@ -1,5 +1,63 @@
 import type { HostConfig } from '../scripts/host-config';
 
+/**
+ * FAST KILL (2026-09-04): outbound Hermes notify senders hard-disabled.
+ * Re-enable by setting NOTIFY_SENDERS_DISABLED to false after flood is resolved.
+ */
+export const NOTIFY_SENDERS_DISABLED = true;
+
+export type NotifySendResult =
+  | { sent: false; skipped: true; reason: 'disabled' }
+  | { sent: false; error: string }
+  | { sent: true };
+
+function notifySkipped(): NotifySendResult {
+  return { sent: false, skipped: true, reason: 'disabled' };
+}
+
+/** Telegram (@Tolowa_bot) — GSM: motion-telegram-bot-token (via TELEGRAM_BOT_TOKEN env). */
+export async function sendTelegramNotify(
+  _message: string,
+  _options?: { chatId?: string },
+): Promise<NotifySendResult> {
+  if (NOTIFY_SENDERS_DISABLED) return notifySkipped();
+  return { sent: false, error: 'sendTelegramNotify: re-enable NOTIFY_SENDERS_DISABLED first' };
+}
+
+/** ntfy publish — GSM: motion-ntfy-hermes-out-topic (via NTFY_HOME_CHANNEL env). */
+export async function sendNtfyNotify(
+  _message: string,
+  _options?: { title?: string; priority?: string },
+): Promise<NotifySendResult> {
+  if (NOTIFY_SENDERS_DISABLED) return notifySkipped();
+  return { sent: false, error: 'sendNtfyNotify: re-enable NOTIFY_SENDERS_DISABLED first' };
+}
+
+/** `hermes send -t <target>` CLI path (telegram / ntfy / other Hermes platforms). */
+export async function hermesSend(
+  _target: string,
+  _message: string,
+): Promise<NotifySendResult> {
+  if (NOTIFY_SENDERS_DISABLED) return notifySkipped();
+  return { sent: false, error: 'hermesSend: re-enable NOTIFY_SENDERS_DISABLED first' };
+}
+
+/** Healthchecks.io dead-man ping — GSM: motion-hermes-heartbeat-ping-url (via env). */
+export async function sendHermesHeartbeatPing(): Promise<NotifySendResult> {
+  if (NOTIFY_SENDERS_DISABLED) return notifySkipped();
+  return { sent: false, error: 'sendHermesHeartbeatPing: re-enable NOTIFY_SENDERS_DISABLED first' };
+}
+
+/** Unified notify entry — all channels hard-stopped while NOTIFY_SENDERS_DISABLED is true. */
+export async function notify(
+  _channel: 'telegram' | 'ntfy' | 'hermes',
+  _message: string,
+  _options?: Record<string, unknown>,
+): Promise<NotifySendResult> {
+  if (NOTIFY_SENDERS_DISABLED) return notifySkipped();
+  return { sent: false, error: 'notify: re-enable NOTIFY_SENDERS_DISABLED first' };
+}
+
 const hermes: HostConfig = {
   name: 'hermes',
   displayName: 'Hermes',
